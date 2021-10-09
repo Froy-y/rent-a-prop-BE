@@ -7,7 +7,13 @@ const RentaSchema = mongoose.Schema({
     },
     address: {
         type: String
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
-})
+    
+}, {timestamps: true})
 
 module.exports = mongoose.model('Renta', RentaSchema)

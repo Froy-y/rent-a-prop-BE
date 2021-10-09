@@ -1,9 +1,11 @@
 //Dependencies
 require('dotenv').config()
 const express = require('express')
+const passport = require('passport')
 const cors = require('cors')
 require('./db/db')
 const RentaController = require('./controllers/renta')
+const authController = require('./controllers/auth')
 
 //Configurations
 const app = express()
@@ -23,7 +25,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(passport.initialize())
+app.use('/auth', authController)
 app.use('/renta', RentaController)
+
 
 //listener
 app.listen(PORT, () => {console.log("Listening on port: ", PORT)})
