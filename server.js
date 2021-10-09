@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 require('./db/db')
 const RentaController = require('./controllers/renta')
+const TenantController = require('./controllers/tenant')
 
 //Configurations
 const app = express()
@@ -24,6 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use('/renta', RentaController)
+app.use('/tenant', TenantController)
 
 //listener
 app.listen(PORT, () => {console.log("Listening on port: ", PORT)})
