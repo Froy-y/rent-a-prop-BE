@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 require('./db/db')
+const RentaController = require('./controllers/renta')
 
 //Configurations
 const app = express()
@@ -22,6 +23,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use('/renta', RentaController)
 
 //listener
 app.listen(PORT, () => {console.log("Listening on port: ", PORT)})
