@@ -6,6 +6,7 @@ const cors = require('cors')
 require('./db/db')
 const RentaController = require('./controllers/renta')
 const authController = require('./controllers/auth')
+const User = require('./models/User')
 
 //Configurations
 const app = express()
@@ -27,8 +28,17 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(passport.initialize())
 app.use('/auth', authController)
-app.use('/renta', RentaController)
+app.use('/:UserId/renta', RentaController)
 
+app.post("/register", (req, res) => {
+    User.create(req.body, (err, createdUser) => {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(createdUser)
+        }
+    })
+})
 
 //listener
 app.listen(PORT, () => {console.log("Listening on port: ", PORT)})

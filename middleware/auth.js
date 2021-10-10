@@ -13,25 +13,24 @@ const options = {
 
 const User = require('../models/User')
 
-const strategy = new Strategy(options, function(jwt_payload, done){
-    console.log(jwt_payload)
-    User.findById(jwt_payload.id).then(
-        (user) => done(null, user)
-    ).catch(err => done(err))
+const strategy = new Strategy(options, function (jwt_payload, done){
+    User.findById(jwt_payload.id)
+    .then((user) => done(null, user))
+    .catch(err => done(err))
 })
 
 passport.use(strategy)
 passport.initialize()
 
-const requireToken = passport.authenticate('jwt', {session: false})
+const requireToken = passport.authenticate('jwt', { session: false })
 
 const createUserToken = (req, user) => {
     if(!user || !req.body.password || !bcrypt.compareSync(req.body.password, user.password)) {
         const err = new Error('The provided username or password is incorrect')
-        err.status = 422
+        err.statusCode = 422
         throw err
     }
-    return jwt.sign({id: user._id}, secret, {expiresIn: 36000})
+    return jwt.sign({ id: user._id }, secret, { expiresIn: 36000 })
 }
 
 const handleValidateOwnership = (req, document) => {
