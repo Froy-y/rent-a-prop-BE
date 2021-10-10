@@ -14,9 +14,9 @@ router.get('/', async (req, res) => {
 })
 
 //show - get
-router.get('/:id', async (req, res) => {
+router.get('/:tId', async (req, res) => {
     try {
-        const findTenant = await Tenant.findById(req.params.id)
+        const findTenant = await Tenant.findById(req.params.tId)
         res.status(200).json(findTenant)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
 })
 
 //create - post
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const newTenant = await Tenant.create(req.body)
         res.status(200).json(newTenant)
@@ -34,9 +34,9 @@ router.get('/', async (req, res) => {
 })
 
 //delete
-router.delete('/:id', async (req, res) => {
+router.delete('/:tId', async (req, res) => {
     try {
-        const deleteTenant = await Tenant.findByIdAndDelete(req.params.id)
+        const deleteTenant = await Tenant.findByIdAndDelete(req.params.tId)
         res.status(200).json(deleteTenant)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -44,9 +44,9 @@ router.delete('/:id', async (req, res) => {
 })
 
 //update - put
-router.put('/:id', async (req, res) => {
+router.put('/:tId', async (req, res) => {
     try {
-        const updateTenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        const updateTenant = await Tenant.findByIdAndUpdate(req.params.tId, req.body, {new: true})
         res.status(200).json(updateTenant)
     } catch (err) {
         res.status(400).json({error: err.message})

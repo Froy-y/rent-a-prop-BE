@@ -25,7 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use('/renta', RentaController)
-app.use('/tenant', TenantController)
+app.use('/:Rid/tenant', TenantController)
 
 //listener
 app.listen(PORT, () => {console.log("Listening on port: ", PORT)})

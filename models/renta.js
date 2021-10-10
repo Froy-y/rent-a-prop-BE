@@ -7,7 +7,11 @@ const RentaSchema = mongoose.Schema({
     },
     address: {
         type: String
+    },
+    tenant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tenant'
     }
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('Renta', RentaSchema)
