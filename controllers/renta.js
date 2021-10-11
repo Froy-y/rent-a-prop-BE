@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
 })
 
 //create
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const newRental = await Renta.create(req.body)
         res.status(200).json(newRental)
