@@ -14,6 +14,7 @@ const register = async (req, res) => {
         const passwordStore = req.body.password
         req.body.password = passwordHash
         const newUser = await User.create(req.body)
+        console.log(newUser)
 
         if (newUser) {
             req.body.password = passwordStore

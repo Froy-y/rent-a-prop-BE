@@ -16,7 +16,7 @@ const User = require('../models/User')
 const strategy = new Strategy(options, function (jwt_payload, done){
     User.findById(jwt_payload.id)
     .then((user) => done(null, user))
-    .catch(err => done(err))
+    .catch((err) => done(err))
 })
 
 passport.use(strategy)
@@ -34,7 +34,7 @@ const createUserToken = (req, user) => {
 }
 
 const handleValidateOwnership = (req, document) => {
-    const ownerId = document.owner._id || document.owner;
+    // const ownerId = document.owner._id || document.owner;
     if (!req.user._id.equals(ownerId)) {
       return new Error("Unauthorized Access");
     } else {
