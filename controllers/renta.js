@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 const Renta = require('../models/renta')
 const User = require('../models/User')
 const {requireToken, handleValidateOwnership } = require('../middleware/auth')
@@ -9,6 +9,7 @@ const {requireToken, handleValidateOwnership } = require('../middleware/auth')
 router.get('/', requireToken, async (req, res) => {
     try {
         const foundUser = await User.findById(req.params.UserId).populate('creator').exec()
+        console.log(foundUser)
         res.status(200).json(foundUser.creator)
     } catch (err) {
         res.status(400).json({ error: err.message })

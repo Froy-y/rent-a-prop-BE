@@ -10,10 +10,12 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    creator: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Renta"
-    }
+    creator: [
+            {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Renta"
+        }
+    ]
 }, {
     timestamps: true,
     toJSON: {
