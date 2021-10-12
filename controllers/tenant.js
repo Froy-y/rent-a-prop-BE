@@ -7,6 +7,7 @@ const Tenant = require('../models/tenant')
 router.get('/', async (req, res) => {
     try {
         const allTenants = await Tenant.find()
+        console.log(allTenants)
         res.status(200).json(allTenants) 
     } catch (err) {
         res.status(400).json({error: err.message})

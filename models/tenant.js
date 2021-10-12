@@ -8,6 +8,10 @@ const TenantSchema = mongoose.Schema({
     age: {
         type: Number
     },
+    renta: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Renta'
+    }
 }, {timestamps: true})
 
 module.exports = mongoose.model('Tenant', TenantSchema)
