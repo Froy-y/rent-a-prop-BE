@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Renta = require('../models/renta')
+const Tenant = require('../models/tenant')
 
 //Get routes
 //index
@@ -14,10 +15,12 @@ router.get('/', async (req, res) => {
 })
 
 //show
-router.get('/:id', async (req, res) => {
+router.get('/:rId', async (req, res) => {
     try {
-        const findRental = await Renta.findById(req.params.id)
-        res.status(200).json(findRental)
+        const findRental = await Renta.findById(req.params.rId)
+        const query = {renta: findRental._id}
+        const allTenants = await Tenant.find(query)
+        res.status(200).json({renta: findRental, tenants: allTenants})
     } catch (err) {
         res.status(400).json({error: err.message})
     }
@@ -34,9 +37,9 @@ router.post('/', async (req, res) => {
 })
 
 //delete
-router.delete('/:id', async (req, res) => {
+router.delete('/:rId', async (req, res) => {
     try {
-        const deleteRental = await Renta.findByIdAndDelete(req.params.id)
+        const deleteRental = await Renta.findByIdAndDelete(req.params.rId)
         res.status(200).json(deleteRental)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -44,9 +47,9 @@ router.delete('/:id', async (req, res) => {
 })
 
 //update
-router.put('/:id', async (req, res) =>{
+router.put('/:rId', async (req, res) =>{
     try {
-        const updateRenta = await Renta.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        const updateRenta = await Renta.findByIdAndUpdate(req.params.rId, req.body, {new: true})
         res.status(200).json(updateRenta)
     } catch (err) {
         res.status(400).json({error: err.message})
