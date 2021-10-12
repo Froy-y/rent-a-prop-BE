@@ -10,12 +10,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    creator: [
-            {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Renta"
-        }
-    ]
 }, {
     timestamps: true,
     toJSON: {
@@ -26,7 +20,6 @@ const userSchema = mongoose.Schema({
         }
     }, 
     id: false
-
 })
 
 module.exports = mongoose.model("User", userSchema)

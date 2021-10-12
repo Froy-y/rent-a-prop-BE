@@ -1,8 +1,8 @@
 const express = require('express')
-const router = express.Router()
-const bcrypt = require('bcrypt')
 const User = require('../models/User')
+const bcrypt = require('bcrypt')
 const {createUserToken, requireToken} = require("../middleware/auth")
+const router = express.Router()
 
 //Controllers (DB INTERFACE)
 //Register Route
@@ -35,9 +35,10 @@ const register = async (req, res) => {
 //login
 const login = async (req, res) => {
     try {
-        const loggingUser = req.body.user
-        const foundUser = await User.findOne({ user: loggingUser })
+        const loggingUser = req.body.username
+        const foundUser = await User.findOne({ username: loggingUser })
         const token = await createUserToken(req, foundUser)
+        console.log(token)
 
         res.status(200).json({
             user: foundUser,

@@ -8,18 +8,22 @@ const {requireToken, handleValidateOwnership } = require('../middleware/auth')
 //index
 router.get('/', requireToken, async (req, res) => {
     try {
-        const foundUser = await User.findById(req.params.UserId).populate('creator').exec()
-        console.log(foundUser)
-        res.status(200).json(foundUser.creator)
+        console.log(req.user)
+        const foundUser = await User.findById(req.user._id)
+        console.log("found user", foundUser)
+        console.log(foundUser._id)
+        const usersRentals = await Renta.find({creator: foundUser._id})
+        console.log("users rental", usersRentals)
+        res.status(200).json(usersRentals)
     } catch (err) {
         res.status(400).json({ error: err.message })
     }
 })
 
 //show
-router.get('/:RentaId', requireToken, async (req, res) => {
+router.get('/:Rid', async (req, res) => {
     try {
-        const findRental = await Renta.findById(req.params.RentaId)
+        const findRental = await Renta.findById(req.params.Rid).populate('creator').exec()
         res.status(200).json(findRental)
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -29,9 +33,9 @@ router.get('/:RentaId', requireToken, async (req, res) => {
 //create
 router.post('/', requireToken, async (req, res) => {
     try {
-        const foundUser = await User.findById(req.params.UserId).populate("creator")
+        req.body.creator = req.user._id
         const newRental = await Renta.create(req.body)
-        await User.findByIdAndUpdate(req.params.UserId, newRental._id)
+        console.log(newRental)
         res.status(200).json(newRental)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -39,13 +43,9 @@ router.post('/', requireToken, async (req, res) => {
 })
 
 //delete
-router.delete('/:RentaId', requireToken, async (req, res) => {
+router.delete('/:Rid', requireToken, async (req, res) => {
     try {
-        const deleteRental = await Renta.findByIdAndDelete(req.params.RentaId)
-        const foundUser = await User.findById(req.params.UserId)
-        const updateRentals = foundUser.creator.filter((rental) => rental != req.params.RentaId)
-        const updateRentaId = updateRentals.map((renta)=> renta._id)
-        await User.findByIdAndUpdate(req.params.UserId, {creator: updateRentaId})
+        const deleteRental = await Renta.findByIdAndDelete(req.params.Rid)
         res.status(200).json(deleteRental)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -53,9 +53,11 @@ router.delete('/:RentaId', requireToken, async (req, res) => {
 })
 
 //update
-router.put('/:RentaId', requireToken, async (req, res) =>{
+router.put('/:Rid', requireToken, async (req, res) =>{
     try {
-        const updateRenta = await Renta.findByIdAndUpdate(req.params.RentaId, req.body, {new: true})
+        handleValidateOwnership(req, await Renta.findById(req.params.Rid))
+        const updateRenta = await Renta.findByIdAndUpdate(req.params.Rid, req.body, {new: true})
+        console.log(updateRenta)
         res.status(200).json(updateRenta)
     } catch (err) {
         res.status(400).json({error: err.message})
