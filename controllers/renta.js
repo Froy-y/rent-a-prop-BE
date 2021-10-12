@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router({ mergeParams: true })
 const Renta = require('../models/renta')
 const User = require('../models/User')
+const Tenant = require('../models/tenant')
 const {requireToken, handleValidateOwnership } = require('../middleware/auth')
 
 //Get routes
@@ -21,10 +22,12 @@ router.get('/', requireToken, async (req, res) => {
 })
 
 //show
-router.get('/:Rid', async (req, res) => {
+router.get('/:rId', async (req, res) => {
     try {
-        const findRental = await Renta.findById(req.params.Rid).populate('creator').exec()
-        res.status(200).json(findRental)
+        const findRental = await Renta.findById(req.params.rId).populate('creator').exec()
+        const query = {renta: findRental._id}
+        const allTenants = await Tenant.find(query)
+        res.status(200).json({renta: findRental, tenants: allTenants})
     } catch (err) {
         res.status(400).json({ error: err.message })
     }
@@ -43,9 +46,9 @@ router.post('/', requireToken, async (req, res) => {
 })
 
 //delete
-router.delete('/:Rid', requireToken, async (req, res) => {
+router.delete('/:rId', requireToken, async (req, res) => {
     try {
-        const deleteRental = await Renta.findByIdAndDelete(req.params.Rid)
+        const deleteRental = await Renta.findByIdAndDelete(req.params.rId)
         res.status(200).json(deleteRental)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -53,10 +56,10 @@ router.delete('/:Rid', requireToken, async (req, res) => {
 })
 
 //update
-router.put('/:Rid', requireToken, async (req, res) =>{
+router.put('/:rId', requireToken, async (req, res) =>{
     try {
-        handleValidateOwnership(req, await Renta.findById(req.params.Rid))
-        const updateRenta = await Renta.findByIdAndUpdate(req.params.Rid, req.body, {new: true})
+        handleValidateOwnership(req, await Renta.findById(req.params.rId))
+        const updateRenta = await Renta.findByIdAndUpdate(req.params.rId, req.body, {new: true})
         console.log(updateRenta)
         res.status(200).json(updateRenta)
     } catch (err) {
