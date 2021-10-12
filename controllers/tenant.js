@@ -6,7 +6,7 @@ const Tenant = require('../models/tenant')
 //get - index
 router.get('/', async (req, res) => {
     try {
-        const query = {renta: req.baseUrl.split('/')[2]}
+        const query = {renta: req.baseUrl.split('/')[3]}
         console.log(query)
         const allTenants = await Tenant.find(query)
         console.log(allTenants)
