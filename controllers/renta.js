@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Renta = require('../models/renta')
+const Tenant = require('../models/tenant')
 
 //Get routes
 //index
@@ -17,7 +18,9 @@ router.get('/', async (req, res) => {
 router.get('/:rId', async (req, res) => {
     try {
         const findRental = await Renta.findById(req.params.rId)
-        res.status(200).json(findRental)
+        const query = {renta: findRental._id}
+        const allTenants = await Tenant.find(query)
+        res.status(200).json({renta: findRental, tenants: allTenants})
     } catch (err) {
         res.status(400).json({error: err.message})
     }
