@@ -7,9 +7,7 @@ const Tenant = require('../models/tenant')
 router.get('/', async (req, res) => {
     try {
         const query = {renta: req.baseUrl.split('/')[3]}
-        console.log(query)
         const allTenants = await Tenant.find(query)
-        console.log(allTenants)
         res.status(200).json(allTenants)
     } catch (err) {
         res.status(400).json({error: err.message})
@@ -29,7 +27,6 @@ router.get('/:tId', async (req, res) => {
 //create - post
 router.post('/', async (req, res) => {
     try {
-        console.log(req.body)
         const newTenant = await Tenant.create(req.body)
         res.status(200).json(newTenant)
     } catch (err) {
