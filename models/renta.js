@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const RentaSchema = mongoose.Schema({
     name: {
         type: String,
-        require: true        
+        require: true
     },
     address: {
         type: String
